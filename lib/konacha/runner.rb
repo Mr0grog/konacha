@@ -20,8 +20,9 @@ module Konacha
       done = false
       begin
         sleep 0.1
-        events = JSON.parse(session.evaluate_script('window.top.Konacha.getEvents()'))
-        if events
+        event_string = session.evaluate_script('window.top.Konacha.getEvents()')
+        if event_string
+          events = JSON.parse(event_string)
           events[events_consumed..-1].each do |event|
             done = true if event['event'] == 'end'
             reporter.process_mocha_event(event)
